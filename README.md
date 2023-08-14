@@ -1,5 +1,5 @@
 # miniVDS
-Are you tired of complicated VPN configurations? I just want a virtual network cable!
+Are you tired of complicated VPN configurations? Will you afford the price of VLAN switches? I just want a virtual network cable!
 
 Here is a simplest distributed virtual switch running on LAN, only 200+ lines code. No configuration required, simply running miniVDS on different devices within the same LAN segment is equivalent to having separate network cards on each of these devices, and they are all connected on a virtual switch.
 
