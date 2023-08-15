@@ -6,7 +6,7 @@ Here is a simplest distributed virtual switch running on LAN, only 200+ lines co
 
 To run multiple virtual switches within the same LAN segment, you just need to specify different port numbers during runtime. Each port number corresponds to a virtual switch.
 
-It supports Linux, OpenWrt, etc.
+It supports Linux, OpenWrt, etc. Compilation requires to link the *pthread* library.
 
 ## Parameters
 
@@ -18,6 +18,11 @@ It supports Linux, OpenWrt, etc.
 ## OpenWrt
 
 ### Auto Startup
+
+Install dependent modules:
+
+	opkg update
+	opkg libstdcpp6 kmod-tun
 
 Download *miniVDS* into directory */root*.
 
