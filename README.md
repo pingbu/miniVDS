@@ -8,6 +8,8 @@ To run multiple virtual switches within the same LAN segment, you just need to s
 
 It supports Linux, OpenWrt, etc. Compilation requires to link the *pthread* library.
 
+[Latest Binary Download](https://github.com/pingbu/miniVDS/releases/tag/1.0), includes binary files for OpenWrt (mipsel, x86_64) and Ubuntu (x64).
+
 ## Parameters
 
 	-d, --daemon      Run in background.
