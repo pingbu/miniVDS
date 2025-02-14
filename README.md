@@ -14,6 +14,7 @@ It supports Linux, OpenWrt, etc. Compilation requires to link the *pthread* libr
 
 	-d, --daemon      Run in background.
 	-h, --help        Show this document.
+    -i, --itf=ITF     Force the TAP interface name.
 	-p, --port=PORT   Set the UDP port. Default port is 4444.
 	                  Each port represent a virtual switch. Endpoints using different ports are not connected.
 

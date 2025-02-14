@@ -28,13 +28,15 @@ class Tap {
     std::string name;
 
 public:
-    Tap() {
+    Tap(const char* if_name = nullptr) {
         fd = ::open("/dev/net/tun", O_RDWR);
         if (fd < 0)
             throw std::runtime_error("Open TUN failed.");
 
         ifreq ifr = {0};
         ifr.ifr_flags = IFF_TAP | IFF_NO_PI;
+        if (if_name)
+            ::strcpy(ifr.ifr_name, if_name);
         int r = ::ioctl(fd, TUNSETIFF, &ifr);
         if (r < 0)
             throw std::runtime_error(format("Create TUN device failed, errno=%d", errno));
@@ -190,7 +192,9 @@ class miniVDS {
     }
 
 public:
-    miniVDS(int port) : udp(port) {
+    miniVDS(const char* name, int port) : tap(name), udp(port) {
+        if (name)
+            printf("Use TAP device %s\n", name);
         printf("Use UDP port %u\n", port);
         broadcast.sin_family = AF_INET;
         broadcast.sin_addr.s_addr = htonl(INADDR_BROADCAST);
@@ -209,12 +213,15 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    printf("miniVDS v1.0 - https://github.com/pingbu/miniVDS/\n");
+    printf("miniVDS v1.1 - https://github.com/pingbu/miniVDS/\n");
     bool daemon = false;
+    const char* name = nullptr;
     int port = 4444;
     for (int i = 1; i < argc; ++i)
         if (strcmp(argv[i], "-d") == 0 || strcmp(argv[i], "--daemon") == 0)
             daemon = true;
+        else if (strncmp(argv[i], "-i=", 3) == 0)
+            name = argv[i] + 3;
         else if (strncmp(argv[i], "-p=", 3) == 0)
             port = (int) strtol(argv[i] + 3, nullptr, 10);
         else if (strncmp(argv[i], "--port=", 7) == 0)
@@ -222,6 +229,7 @@ int main(int argc, char *argv[]) {
         else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             printf("  -d, --daemon      Run in background.\n"
                    "  -h, --help        Show this document.\n"
+                   "  -i, --itf=ITF     Force the TAP interface name.\n"
                    "  -p, --port=PORT   Set the UDP port. Default port is 4444.\n"
                    "                    Each port represent a virtual switch. Endpoints using different ports are not connected.\n");
             return 0;
@@ -235,6 +243,6 @@ int main(int argc, char *argv[]) {
         if (r != 0)
             throw std::runtime_error("daemon FAILED!");
     }
-    miniVDS(port).run();
+    miniVDS(name, port).run();
     return 0;
 }
