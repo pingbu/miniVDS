@@ -25,7 +25,7 @@ It supports Linux, OpenWrt, etc. Compilation requires to link the *pthread* libr
 Install dependent modules:
 
 	opkg update
-	opkg libstdcpp6 kmod-tun
+	opkg install libstdcpp6 kmod-tun
 
 Download *miniVDS* into directory */root*.
 
